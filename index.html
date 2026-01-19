@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Pro DK</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen" class="login-container">
+        <h1>BLACKJACK CASINO</h1>
+        <div class="login-box">
+            <input type="text" id="username" placeholder="Внеси корисничко име">
+            <div class="age-check">
+                <input type="checkbox" id="age-confirm">
+                <label for="age-confirm">Потврдувам дека имам 18+ години</label>
+            </div>
+            <button id="login-btn">ВЛЕЗИ</button>
+            <button id="guest-btn">ИГРАЈ КАКО ГОСТИН</button>
+        </div>
+    </div>
+
+    <div id="main-game" class="game-container" style="display:none;">
+        <div class="user-header">
+            <div class="user-info">Играч: <span id="display-user"></span></div>
+            <button id="logout-btn">ОДЈАВИ СЕ</button>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">Пари: $<span id="balance">1000</span></div>
+            <div class="stat-item">Облог: $<span id="current-bet">0</span></div>
+        </div>
+
+        <div id="betting-section">
+            <h3>Постави облог со чипови:</h3>
+            <div class="chips-container">
+                <img src="./cards/chip10.png" class="chip" data-value="10">
+                <img src="./cards/chip50.png" class="chip" data-value="50">
+                <img src="./cards/chip100.png" class="chip" data-value="100">
+                <img src="./cards/chip200.png" class="chip" data-value="200">
+                <img src="./cards/chip500.png" class="chip" data-value="500">
+            </div>
+            <div class="bet-controls">
+                <button id="clear-bet">ИЗБРИШИ ОБЛОГ</button>
+                <button id="place-bet-btn">ПОДЕЛИ КАРТИ</button>
+            </div>
+        </div>
+
+        <div id="game-table" style="display:none;">
+            <div id="insurance-panel" style="display:none;" class="special-box">
+                <p>Дилерот има Ас! Осигурување?</p>
+                <button id="insure-yes">ДА</button>
+                <button id="insure-no">НЕ</button>
+            </div>
+
+            <div class="section">
+                <h2>Дилер: <span id="dealer-sum">??</span></h2>
+                <div id="dealer-cards" class="cards-area">
+                    <img id="hidden-card" src="./cards/redBack.png">
+                </div>
+            </div>
+
+            <div id="player-hands-container">
+                <div id="hand-0" class="hand-section active-hand">
+                    <h2>Ти (Рака 1): <span id="player-sum-0">0</span></h2>
+                    <div id="player-cards-0" class="cards-area"></div>
+                </div>
+                <div id="hand-1" class="hand-section" style="display:none;">
+                    <h2>Ти (Рака 2): <span id="player-sum-1">0</span></h2>
+                    <div id="player-cards-1" class="cards-area"></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="hit-btn">HIT</button>
+                <button id="stand-btn">STAND</button>
+                <button id="double-btn">DOUBLE</button>
+                <button id="split-btn" style="display:none; background: #9b59b6; color: white;">SPLIT</button>
+                <button id="surrender-btn" style="background: #7f8c8d; color: white;">SURRENDER</button>
+            </div>
+        </div>
+
+        <h2 id="results"></h2>
+        <button id="next-hand-btn" style="display:none;">СЛЕДНА ПАРТИЈА</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

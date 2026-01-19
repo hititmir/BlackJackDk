@@ -53,8 +53,7 @@ function placeBet() {
     bet = tempBet; balance -= bet; buildDeck();
     document.getElementById("betting-section").style.display = "none";
     document.getElementById("game-table").style.display = "block";
-    canHit = true; startGame();
-    updateUI();
+    canHit = true; startGame(); updateUI();
 }
 
 function startGame() {
@@ -73,12 +72,7 @@ function startGame() {
 
     let pSum = reduceAce(playerSums[0], playerAceCounts[0]);
     document.getElementById("player-sum-0").innerText = pSum;
-
-    if (dCard.endsWith("A")) {
-        document.getElementById("insurance-panel").style.display = "block";
-        canHit = false;
-    }
-
+    if (dCard.endsWith("A")) { document.getElementById("insurance-panel").style.display = "block"; canHit = false; }
     if (pSum === 21) finishDealer();
     if (getValue(playerHands[0][0]) === getValue(playerHands[0][1])) document.getElementById("split-btn").style.display = "inline-block";
 }
@@ -103,9 +97,7 @@ function stand() {
         activeHandIndex = 1;
         document.getElementById("hand-0").classList.remove("active-hand");
         document.getElementById("hand-1").classList.add("active-hand");
-    } else {
-        finishDealer();
-    }
+    } else { finishDealer(); }
 }
 
 function doubleDown() {
@@ -135,8 +127,7 @@ function splitCards() {
 
 function surrender() {
     if (!canHit || isSplit) return;
-    balance += bet / 2;
-    document.getElementById("results").innerText = "Surrendered (-50%)";
+    balance += bet / 2; document.getElementById("results").innerText = "Се предадовте (-50%)";
     canHit = false; endRound();
 }
 
@@ -160,11 +151,8 @@ function finishDealer() {
             }
             let fD = reduceAce(dealerSum, dealerAceCount);
             document.getElementById("dealer-sum").innerText = fD;
-            
             let finalMsg = "", totalWin = 0;
-            if (insuranceBet > 0 && fD === 21 && hiddenCard.endsWith("A") || hiddenCard.match(/10|J|Q|K/)) {
-                balance += insuranceBet * 3;
-            }
+            if (insuranceBet > 0 && fD === 21) balance += insuranceBet * 3;
 
             for (let i = 0; i <= (isSplit ? 1 : 0); i++) {
                 let fP = reduceAce(playerSums[i], playerAceCounts[i]);
@@ -172,11 +160,11 @@ function finishDealer() {
                 let res = "";
                 if (fP > 21) res = "Bust";
                 else if (fD > 21 || fP > fD) { 
-                    res = isBJ ? "Blackjack!" : "Победи"; 
+                    res = isBJ ? "Blackjack!" : "Победа"; 
                     totalWin += isBJ ? (bet * 2.5) : (bet * 2);
-                } else if (fP < fD) res = "Изгуби";
+                } else if (fP < fD) res = "Пораз";
                 else { res = "Push"; totalWin += bet; }
-                finalMsg += (isSplit ? `Hand ${i+1}: ${res} | ` : res);
+                finalMsg += (isSplit ? `Рака ${i+1}: ${res} | ` : res);
             }
             balance += totalWin; document.getElementById("results").innerText = finalMsg;
             endRound();
@@ -184,10 +172,7 @@ function finishDealer() {
     }, 300);
 }
 
-function endRound() {
-    document.getElementById("next-hand-btn").style.display = "block";
-    updateUI();
-}
+function endRound() { document.getElementById("next-hand-btn").style.display = "block"; updateUI(); }
 
 function resetForNextHand() {
     bet = 0; tempBet = 0; insuranceBet = 0; activeHandIndex = 0; isSplit = false;
@@ -211,10 +196,16 @@ function getValue(c) {
 }
 function checkAce(c) { return c.endsWith("A") ? 1 : 0; }
 function reduceAce(s, a) { while (s > 21 && a > 0) { s -= 10; a--; } return s; }
+
 function renderCard(id, c) {
     let img = document.createElement("img");
     img.src = "./cards/" + c + ".png";
     img.classList.add("card-anim");
-    document.getElementById(id).append(img);
+    let container = document.getElementById(id);
+    if (container.children.length >= 3 && window.innerWidth < 768) {
+        img.style.marginLeft = "-60px"; // Преклопување на мобилен за заштеда на простор
+    }
+    container.append(img);
 }
+
 function updateUI() { document.getElementById("balance").innerText = Math.floor(balance); }
